@@ -1,8 +1,8 @@
 {
-    "name": "Django VueJs Template",
-    "description": "",
-    "repository": "https://github.com/gtalarico/django-vue-template",
-    "keywords": ["django", "vue", "vuejs", "template", "django rest framework"],
+    "name": "GeoDjango REST Vue Boilerplate",
+    "description": "Start building geolocation now!",
+    "repository": "https://github.com/hvitis/geodjango-rest-vue-boilerplate",
+    "keywords": ["django", "vue", "leaflet", "template", "django rest framework"],
     "env": {
       "DJANGO_SETTINGS_MODULE": {
         "description": "Set Django Settings to Production",

@@ -95,4 +95,4 @@ $ git push heroku
 I build it using [django-vue-template][0]. Check it out for more information.
 
 
-[0]: https://github.com/hvitis/geodjango-rest-vue-boilerplate
+[0]: https://github.com/gtalarico/django-vue-template
