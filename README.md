@@ -1,13 +1,14 @@
-# GeoDjango Vue Leaflet Boilerplate 💚🐍
-
+# GeoDjango REST Vue Boilerplate 💚🐍
+___
 ![Vue Logo](./src/assets/vue-leaflet.png "Vue Logo")
 ![Django Logo](./src/assets/REST.png "Django REST")
+(using leaflet)
 
 This template is a boilerplate to explain geodjango with front-end implementation. 
 
 ### Demo
 
-[Live Demo](https://geodjango-vue-leaflet-boilerplate.herokuapp.com/)
+[Live Demo](https://geodjango-rest-vue-boilerplate.herokuapp.com/)
 
 ### Includes
 
