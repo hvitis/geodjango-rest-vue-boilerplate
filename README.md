@@ -1,8 +1,6 @@
 # GeoDjango REST Vue Boilerplate 💚🐍
 ___
-![Vue Logo](./src/assets/vue-leaflet.png "Vue Logo")
-![Django Logo](./src/assets/REST.png "Django REST")
-(using leaflet)
+![Vue Logo](./src/assets/main-logo.png "Vue Logo")
 
 This template is a boilerplate to explain geodjango with front-end implementation. 
 
