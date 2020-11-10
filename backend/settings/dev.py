@@ -11,17 +11,17 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import environ
+# import environ
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 SETTINGS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(SETTINGS_DIR)
-ENV_FILE= os.path.join(BASE_DIR, '.env')
-# Setting up environment variables
-env = environ.Env()
-environ.Env.read_env(env_file=ENV_FILE)
-print('ENV_FILE: ', ENV_FILE)
+# ENV_FILE= os.path.join(BASE_DIR, '.env')
+# # Setting up environment variables
+# env = environ.Env()
+# environ.Env.read_env(env_file=ENV_FILE)
+# print('ENV_FILE: ', ENV_FILE)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
