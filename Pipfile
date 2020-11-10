@@ -10,6 +10,8 @@ gunicorn = "*"
 whitenoise = "==4.0"
 dj-database-url = "*"
 psycopg2-binary = "*"
+django-environ==0.4.5
+django-ipware==3.0.2
 
 [dev-packages]
 
