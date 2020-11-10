@@ -103,16 +103,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Parse database configuration from $DATABASE_URL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis', 
     }
 }
-if not DEBUG:
-    DATABASES['default'] =  dj_database_url.config()
+# Create .env file in root folder (the one with README.md)
+# put there DATABASE_URL variable with credentials formatted in
+# this way:
+# DATABASE_URL=postgres://DB_USER_:DB_PASS_@DB_HOST_:DB_PORT_/DB_NAME
+DATABASES['default'] =  dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
