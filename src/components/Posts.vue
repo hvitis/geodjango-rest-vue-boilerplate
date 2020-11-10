@@ -10,17 +10,17 @@
     <input 
       type="submit" 
       value="Add" 
-      @click="addMessage({ subject: subject, body: msgBody })" 
+      @click="addPost({ subject: subject, body: msgBody })" 
       :disabled="!subject || !msgBody">
 
     <hr/>
-    <h3>Messages on Database</h3>
-    <p v-if="messages.length === 0">No Messages</p>
-    <div class="msg" v-for="(msg, index) in messages" :key="index">
+    <h3>Posts on Database</h3>
+    <p v-if="posts.length === 0">No Posts</p>
+    <div class="msg" v-for="(msg, index) in posts" :key="index">
         <p class="msg-index">[{{index}}]</p>
         <p class="msg-subject" v-html="msg.subject"></p>
         <p class="msg-body" v-html="msg.body"></p>
-        <input type="submit" @click="deleteMessage(msg.pk)" value="Delete" />
+        <input type="submit" @click="deletePost(msg.pk)" value="Delete" />
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: "Messages",
+  name: "Posts",
   data() {
     return {
       subject: "",
@@ -37,14 +37,14 @@ export default {
     };
   },
   computed: mapState({
-    messages: state => state.messages.messages
+    posts: state => state.posts.posts
   }),
-  methods: mapActions('messages', [
-    'addMessage',
-    'deleteMessage'
+  methods: mapActions('posts', [
+    'addPost',
+    'deletePost'
   ]),
   created() {
-    this.$store.dispatch('messages/getMessages')
+    this.$store.dispatch('posts/getPosts')
   }
 };
 </script>

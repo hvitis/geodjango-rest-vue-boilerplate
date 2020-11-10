@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(SETTINGS_DIR)
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'SET_UP_YOUR_SECRET_KEY'
+SECRET_KEY = 'SET_UP_YOUR_DEV_SECRET_KEY'
 # To do that execute django function from separate terminal:
 # from django.core.management.utils import get_random_secret_key  
 # get_random_secret_key()
@@ -105,11 +105,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # this way:
 # DATABASE_URL=postgres://DB_USER_:DB_PASS_@DB_HOST_:DB_PORT_/DB_NAME
 DATABASES = {}
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] =  dj_database_url.config(default='postgres://postgres:bananowyraj@localhost:5432/boilerplate')
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
-GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
-GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+# GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+# GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -151,11 +151,15 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.SessionAuthentication',),
+}
+
 STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'dist', 'static')
 STATICFILES_DIRS = []
-
 
 ##########
 # STATIC #
@@ -166,3 +170,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Insert Whitenoise Middleware at top but below Security Middleware
 # MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware',)
 # http://whitenoise.evans.io/en/stable/django.html#make-sure-staticfiles-is-configured-correctly
+
+##########
+# OTHER #
+##########
+
+IPINFO_ACCESS_TOKEN = '10d78f6f9f735f'

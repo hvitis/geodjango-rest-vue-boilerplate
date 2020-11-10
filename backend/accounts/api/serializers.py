@@ -22,3 +22,16 @@ class GeneralUserSerializer(serializers.ModelSerializer):
     # def get_user_profile(self, obj):
     #     user_profile = UserProfile.objects.filter(user__id=obj.id).first()
     #     return SocialMediaSerializer([user_profile,], many=True).data[0]
+
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
+
+class UpdateLocationSerializer(GeoFeatureModelSerializer):
+    """ A class to serialize locations as GeoJSON compatible data """
+
+    class Meta:
+        model = User
+        geo_field = "coordinates"
+
+        # you can also explicitly declare which fields you want to include
+        # as with a ModelSerializer.
+        fields = ('id','email','coordinates',)
