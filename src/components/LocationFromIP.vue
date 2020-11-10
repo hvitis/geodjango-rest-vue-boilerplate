@@ -2,32 +2,34 @@
   <div class="hello">
     <br/>
     <p>LocationFromIp</p>
-    <button 
-      value="Get Location" 
+    <button  
       @click="updateLocation()">
-    </button>
+    Get Location</button>
     <hr/>
-    <h3>Location</h3>
-    {{acountLocation.toString()}}
+    <h3>Location:</h3>
+    {{accountLocation}}
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: "LocationFromIP",
   data() {
     return {};
   },
-  computed: mapState({
-    acountLocation: state => state.acountLocation
-  }),
+  computed: {
+    ...mapGetters({
+      accountLocation: "accounts/updateLocation",
+    
+    }),
+  },
   methods: mapActions('accounts', [
     'updateLocation',
   ]),
   created() {
-    this.$store.dispatch('messages/updateLocation')
+    this.$store.dispatch('accounts/updateLocation')
   }
 };
 </script>

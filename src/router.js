@@ -32,7 +32,7 @@ export default new Router({
     },
     {
       path: '/ip',
-      name: 'LocationFromIP',
+      name: 'ip',
       component: LocationFromIP
     }
   ]

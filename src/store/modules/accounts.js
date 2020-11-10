@@ -1,35 +1,40 @@
-import accountsService from '../../services/accountsService'
+import accountsService from "../../services/accountsService";
 
 const state = {
-  acountLocation: {}
-}
+  accountLocation: "",
+};
 
 const getters = {
-    updateLocation: state => {
-    return state.acountLocation
-  }
-}
+  updateLocation: (state) => {
+    return state.accountLocation;
+  },
+};
 
 const actions = {
-  updateLocation ({ commit }) {
-    accountsService.updateLocation()
-    .then(location => {
-      commit('acountLocation', location)
-    })
-  }
-}
+  updateLocation({ commit }) {
+    accountsService
+      .updateLocation()
+      .then((response) => {
+        let location = response.geometry;
+        commit("accountLocation", location);
+      })
+      .catch((error) => {
+        let errorMessage = error.response.data.message
+        commit("accountLocation", errorMessage);
+      });
+  },
+};
 
 const mutations = {
-    updateLocation (state, location) {
-    state.acountLocation = location
+  accountLocation(state, location) {
+    state.accountLocation = location;
   },
-
-}
+};
 
 export default {
   namespaced: true,
   state,
   getters,
   actions,
-  mutations
-}
+  mutations,
+};
