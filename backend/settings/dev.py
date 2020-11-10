@@ -112,6 +112,9 @@ DATABASES = {
 # DATABASE_URL=postgres://DB_USER_:DB_PASS_@DB_HOST_:DB_PORT_/DB_NAME
 DATABASES['default'] =  dj_database_url.config()
 
+GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
