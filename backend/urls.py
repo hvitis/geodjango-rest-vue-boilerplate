@@ -8,10 +8,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from .api.views import index_view, MessageViewSet
+from .posts.views import index_view, PostsViewSet
 
 router = routers.DefaultRouter()
-router.register('messages', MessageViewSet)
+# router.register('posts', PostsViewSet)
 
 urlpatterns = [
 
@@ -20,6 +20,7 @@ urlpatterns = [
 
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
+    path('api/', include('backend.posts.urls')),
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),

@@ -54,6 +54,14 @@ $ python manage.py migrate
 
 ## Running Development Servers
 
+1. Create .env file with your geodatabase credentials:
+(geospatial database is just PostgreSQL database with postgis extension)
+```
+DB_NAME=YOUR_DB_NAME
+DB_USER=YOUR_DB_USER
+DB_PASSWORD=YOUR_PASSWORD
+```
+
 ```
 $ python manage.py runserver
 ```

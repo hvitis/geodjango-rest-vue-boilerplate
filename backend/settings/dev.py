@@ -11,22 +11,32 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 SETTINGS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(SETTINGS_DIR)
-
+ENV_FILE= os.path.join(BASE_DIR, '.env')
+# Setting up environment variables
+env = environ.Env()
+environ.Env.read_env(env_file=ENV_FILE)
+print('ENV_FILE: ', ENV_FILE)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'verybadsecret!!!'
+SECRET_KEY = 'SET_UP_YOUR_SECRET_KEY'
+# To do that execute django function from separate terminal:
+# from django.core.management.utils import get_random_secret_key  
+# get_random_secret_key()
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -39,8 +49,11 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # < Per Whitenoise, to disable built in
     'django.contrib.staticfiles',
     'rest_framework',
-    'backend.api',
+    'backend.posts',
+    'backend.accounts',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,13 +91,28 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# Default SQLite
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+#PostGIS DB for geospatial usage
+# Parse database configuration from $DATABASE_URL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
+if not DEBUG:
+    DATABASES['default'] =  dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
