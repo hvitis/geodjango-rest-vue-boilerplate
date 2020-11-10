@@ -100,17 +100,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # }
 
 #PostGIS DB for geospatial usage
-# Parse database configuration from $DATABASE_URL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis', 
-    }
-}
 # Create .env file in root folder (the one with README.md)
 # put there DATABASE_URL variable with credentials formatted in
 # this way:
 # DATABASE_URL=postgres://DB_USER_:DB_PASS_@DB_HOST_:DB_PORT_/DB_NAME
+DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
