@@ -1,10 +1,9 @@
 import decimal
 import random
 from ipware import get_client_ip
-from django.contrib.auth.models import Permission
 from backend.accounts.models import User
 from rest_framework.generics import (ListAPIView, UpdateAPIView)
-from backend.accounts.api.serializers import GeneralUserSerializer, UpdateLocationSerializer
+from backend.accounts.api.serializers import GeneralUserSerializer, UpdateLocationSerializer, NearbyUsersSerializer
 
 
 class UserViewSetAll(ListAPIView):
@@ -86,3 +85,42 @@ class UpdateLocation(UpdateAPIView):
         lat, lng = round((float(lat) + random_lat),
                          6), round((float(lng) + random_lng), 6)
         return lat, lng
+
+from geopy.geocoders import Nominatim
+from rest_framework_gis.filterset import GeoFilterSet
+from rest_framework_gis import filters as geofilters
+
+
+class ListNearbyUsers(ListAPIView, GeoFilterSet):
+    """ Shows nearby Users"""
+    model = User
+    serializer_class = NearbyUsersSerializer
+    pagination_class = GeoJsonPagination
+    contains_geom = geofilters.GeometryFilter(name='coordinates', lookup_expr='exists')
+    
+    def get(self, *args, **kwargs):
+        # We can check on the server side the location of the users, using request
+        # point = self.request.user.coordinates
+        # ?address=QUERY_ADDRESS
+        # QUERY_ADDRESS is the information user passes to the query
+        QUERY_ADDRESS = self.request.query_params.get('address', None)
+        
+        if QUERY_ADDRESS not in [None, '']:
+            # here we can use the geopy library:
+            geolocator = Nominatim(user_agent="mysuperapp")
+            location = geolocator.geocode(QUERY_ADDRESS)
+            return Response({'coordinates': [location.latitude ,location.longitude]}, status=status.HTTP_200_OK)
+        else: 
+            return Response({'message': 'No address was passed in the query'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # from django.db.models import Q
+            # from django.contrib.gis.measure import Distance
+
+            # Let's use the obtained information to create a geodjango Point
+            # point = Point(float(location.latitude), float(location.longitude), srid=4326)
+            
+            # return queryset
+            # RADIUS_SEARCH_IN_KM = 0.5
+            # and query for 10 Users objects to find active users within 500 m
+            # queryset = queryset.filter(Q(coordinates__distance_lt=(
+            #     point, Distance(km=RADIUS_SEARCH_IN_KM))) & Q(is_active=True)).order_by('coordinates')[0:10]

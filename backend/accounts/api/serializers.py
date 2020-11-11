@@ -35,3 +35,15 @@ class UpdateLocationSerializer(GeoFeatureModelSerializer):
         # you can also explicitly declare which fields you want to include
         # as with a ModelSerializer.
         fields = ('id','email','coordinates',)
+
+class NearbyUsersSerializer(GeoFeatureModelSerializer):
+    """ A class to serialize locations as GeoJSON compatible data """
+
+    class Meta:
+        model = User
+        geo_field = "coordinates"
+
+        # you can also explicitly declare which fields you want to include
+        # as with a ModelSerializer.
+        fields = ('id','first_name', 'last_name', 'address', 'coordinates',)
+

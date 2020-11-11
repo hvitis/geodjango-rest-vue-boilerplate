@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'backend.posts',
     'backend.accounts',
+    'django_filters',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
