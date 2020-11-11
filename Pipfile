@@ -14,7 +14,7 @@ django-environ = "==0.4.5"
 django-ipware = "==3.0.2"
 djangorestframework-gis = "*"
 django-filter = "*"
-
+geopy = "*"
 
 [dev-packages]
 
