@@ -60,7 +60,7 @@ class UpdateLocation(UpdateAPIView):
 
         pnt = GEOSGeometry(point)
         geojson = json.loads(pnt.geojson)
-        return Response({'coordinates': geojson['coordinates']}, status=status.HTTP_201_CREATED)
+        return Response({'coordinates': reversed(geojson['coordinates'])}, status=status.HTTP_201_CREATED)
     
         # Querying for potential customers or printers, depending of recieved request
         # queryset = TemporaryProfile.objects.filter(Q(coordinates__distance_lt=(
