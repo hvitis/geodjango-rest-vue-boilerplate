@@ -15,7 +15,7 @@ const actions = {
     accountsService
       .updateLocation()
       .then((response) => {
-        let location = response.geometry;
+        let location = response.coordinates;
         commit("accountLocation", location);
       })
       .catch((error) => {

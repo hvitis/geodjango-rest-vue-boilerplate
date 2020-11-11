@@ -18,7 +18,8 @@ from rest_framework import status
 from rest_framework.response import Response
 # from backend.accounts.api.serializers import UpdateLocationSerializer
 from django.contrib.gis.geos import Point
-
+from django.contrib.gis.geos import GEOSGeometry
+import json
 class UpdateLocation(UpdateAPIView):
     """ Creates a new email user with geolocation and returns 
     10 closest people to the person"""
@@ -52,12 +53,14 @@ class UpdateLocation(UpdateAPIView):
         
         # Requires at least 1 user in DB (e.g.  admin) 
         user_obj = User.objects.all().first()
-        new_coordinates = {'coordinates': point}
-        anonymize_profile = UpdateLocationSerializer(user_obj, data=new_coordinates, partial=True)
+        anonymize_profile = UpdateLocationSerializer(user_obj, data={'coordinates': point}, partial=True)
         if not anonymize_profile.is_valid():
             return Response(anonymize_profile.errors, status=status.HTTP_400_BAD_REQUEST)
         anonymize_profile.save()
-        return Response(anonymize_profile.data, status=status.HTTP_201_CREATED)
+
+        pnt = GEOSGeometry(point)
+        geojson = json.loads(pnt.geojson)
+        return Response({'coordinates': geojson['coordinates']}, status=status.HTTP_201_CREATED)
     
         # Querying for potential customers or printers, depending of recieved request
         # queryset = TemporaryProfile.objects.filter(Q(coordinates__distance_lt=(
@@ -82,4 +85,4 @@ class UpdateLocation(UpdateAPIView):
         # randomizing values and cutting decimals to 6
         lat, lng = round((float(lat) + random_lat),
                          6), round((float(lng) + random_lng), 6)
-        return lng, lat
+        return lat, lng
