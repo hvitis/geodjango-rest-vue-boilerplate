@@ -44,8 +44,12 @@ class UpdateLocation(UpdateAPIView):
         if not latitude:
             return Response({'message': 'IP or location was not found.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         latitude, longitude = self.anonymize_location(latitude, longitude)
-        print('latitude, longitude', latitude, longitude)
-        point = Point(float(latitude), float(longitude), srid=4326)
+        print('Users latitude {} and longitude {}'.format(latitude, longitude))
+
+        # For GeoDjango PointField we define it y and x, contrary to what is a norm
+        # more in docs: https://docs.djangoproject.com/en/3.1/ref/contrib/gis/geos/#point
+        point = Point(float(longitude), float(latitude), srid=4326)
+        
         # Requires at least 1 user in DB (e.g.  admin) 
         user_obj = User.objects.all().first()
         new_coordinates = {'coordinates': point}
@@ -74,10 +78,8 @@ class UpdateLocation(UpdateAPIView):
             random.randrange(50, 90)) / 10000)
         random_lng = float(decimal.Decimal(
             random.randrange(50, 90)) / 10000)
-        print(random_lat, random_lng)
         # float(random.randrange(155, 389))/100 # Other way of doing things
         # randomizing values and cutting decimals to 6
         lat, lng = round((float(lat) + random_lat),
                          6), round((float(lng) + random_lng), 6)
-        print(lat, lng)
         return lng, lat
