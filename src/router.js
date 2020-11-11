@@ -5,6 +5,7 @@ import AddressSearch from '@/components/AddressSearch'
 import Home from '@/pages/Home'
 import Posts from '@/components/Posts'
 import LocationFromIP from '@/components/LocationFromIP'
+import CoordinatesFromAddress from '@/components/CoordinatesFromAddress'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/ip',
       name: 'ip',
       component: LocationFromIP
+    },
+    {
+      path: '/coords',
+      name: 'coords',
+      component: CoordinatesFromAddress
     }
   ]
 })

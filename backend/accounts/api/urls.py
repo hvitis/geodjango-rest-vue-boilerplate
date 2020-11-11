@@ -1,5 +1,5 @@
 from django.urls import path
-from backend.accounts.api.views import UserViewSetAll, UpdateLocation, ListNearbyUsers
+from backend.accounts.api.views import UserViewSetAll, UpdateLocation, ListNearbyUsers, GetCoordinatesFromAddress
 
 app_name = 'accounts'
 
@@ -10,5 +10,7 @@ urlpatterns = [
          UpdateLocation.as_view(), name="update-location"),
     path("nearbyusers",
          ListNearbyUsers.as_view(), name="nearby-users"),
+    path("coordinates",
+         GetCoordinatesFromAddress.as_view(), name="get-coordinates"),
 
 ]

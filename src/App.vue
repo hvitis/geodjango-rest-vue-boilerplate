@@ -6,7 +6,8 @@
      <router-link :to="{ name: 'map' }">Map</router-link> |
      <router-link :to="{ name: 'address' }">Address</router-link> |
      <router-link :to="{ name: 'messages' }">Django Rest</router-link> |
-     <router-link :to="{ name: 'ip' }">Location from IP</router-link>
+     <router-link :to="{ name: 'ip' }">Location from IP</router-link> |
+     <router-link :to="{ name: 'coords' }">Coords from address</router-link>
     </div>
     <router-view/>
   </div>

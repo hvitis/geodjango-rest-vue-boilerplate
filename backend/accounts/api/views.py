@@ -4,7 +4,7 @@ from ipware import get_client_ip
 from backend.accounts.models import User
 from rest_framework.generics import (ListAPIView, UpdateAPIView)
 from backend.accounts.api.serializers import GeneralUserSerializer, UpdateLocationSerializer, NearbyUsersSerializer
-
+from django.conf import settings
 
 class UserViewSetAll(ListAPIView):
     serializer_class = GeneralUserSerializer
@@ -61,10 +61,7 @@ class UpdateLocation(UpdateAPIView):
         geojson = json.loads(pnt.geojson)
         return Response({'coordinates': reversed(geojson['coordinates'])}, status=status.HTTP_201_CREATED)
     
-        # Querying for potential customers or printers, depending of recieved request
-        # queryset = TemporaryProfile.objects.filter(Q(coordinates__distance_lt=(
-        #     point, Distance(km=settings.FREE_RADIUS_SEARCH))) & Q(is_printer=(not request['is_printer']))).order_by('coordinates')[0:10]
-    
+
     def anonymize_location(self, lat, lng):
         """Shifting lat and lng a random tens of meters in positive direction
             Three decimal places will always be within 80 m of the point described. 
@@ -89,14 +86,11 @@ class UpdateLocation(UpdateAPIView):
 from geopy.geocoders import Nominatim
 from rest_framework_gis.filterset import GeoFilterSet
 from rest_framework_gis import filters as geofilters
+from django.db.models import Q
+from django.contrib.gis.measure import Distance
 
-
-class ListNearbyUsers(ListAPIView, GeoFilterSet):
+class GetCoordinatesFromAddress(ListAPIView, GeoFilterSet):
     """ Shows nearby Users"""
-    model = User
-    serializer_class = NearbyUsersSerializer
-    pagination_class = GeoJsonPagination
-    contains_geom = geofilters.GeometryFilter(name='coordinates', lookup_expr='exists')
     
     def get(self, *args, **kwargs):
         # We can check on the server side the location of the users, using request
@@ -113,14 +107,34 @@ class ListNearbyUsers(ListAPIView, GeoFilterSet):
         else: 
             return Response({'message': 'No address was passed in the query'}, status=status.HTTP_400_BAD_REQUEST)
             
-            # from django.db.models import Q
-            # from django.contrib.gis.measure import Distance
+
+class ListNearbyUsers(ListAPIView, GeoFilterSet):
+    """ Shows nearby Users"""
+    model = User
+    serializer_class = NearbyUsersSerializer
+    pagination_class = GeoJsonPagination
+    contains_geom = geofilters.GeometryFilter(name='coordinates', lookup_expr='exists')
+    
+    def get_queryset(self, *args, **kwargs):
+        # We can check on the server side the location of the users, using request
+        # point = self.request.user.coordinates
+        # ?address=QUERY_ADDRESS
+        # QUERY_ADDRESS is the information user passes to the query
+        QUERY_ADDRESS = self.request.query_params.get('address', None)
+        queryset = []
+
+        if QUERY_ADDRESS not in [None, '']:
+            queryset = User.objects.all()
+            # here we can use the geopy library:
+            geolocator = Nominatim(user_agent="mysuperapp.com")
+            location = geolocator.geocode(QUERY_ADDRESS)
 
             # Let's use the obtained information to create a geodjango Point
-            # point = Point(float(location.latitude), float(location.longitude), srid=4326)
+            point = Point(float(location.longitude), float(location.latitude), srid=4326)
+            # and query for 10 Users objects to find active users within radius
+            queryset = queryset.filter(Q(coordinates__distance_lt=(
+                point, Distance(km=settings.RADIUS_SEARCH_IN_KM))) & Q(is_active=True)).order_by('coordinates')[0:10]
+            return queryset
+        else: 
+            return queryset
             
-            # return queryset
-            # RADIUS_SEARCH_IN_KM = 0.5
-            # and query for 10 Users objects to find active users within 500 m
-            # queryset = queryset.filter(Q(coordinates__distance_lt=(
-            #     point, Distance(km=RADIUS_SEARCH_IN_KM))) & Q(is_active=True)).order_by('coordinates')[0:10]
