@@ -8,6 +8,10 @@ This template is a boilerplate to explain geodjango with front-end implementatio
 
 [Live Demo](https://geodjango-rest-vue-boilerplate.herokuapp.com/)
 
+### How to?
+
+If you are new to GeoDjango check out [the tutorial][1] for this repo.
+
 ### Includes
 
 * Django
@@ -104,3 +108,4 @@ I build it using [django-vue-template][0]. Check it out for more information.
 
 
 [0]: https://github.com/gtalarico/django-vue-template
+[1]: https://hvitis.dev/geolocation-tutorial-geodjango-demo-and-gis-postgis-data-to-build-app-using-rest-api
